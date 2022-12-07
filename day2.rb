@@ -18,6 +18,24 @@ class Day2
         'Z' => 3
     }
 
+    WIN = {
+        'A' => 'Y',
+        'B' => 'Z',
+        'C' => 'X'
+    }
+
+    DRAW = {
+        'A' => 'X',
+        'B' => 'Y',
+        'C' => 'Z'
+    }
+
+    LOSE = {
+        'A' => 'Z',
+        'B' => 'X',
+        'C' => 'Y'
+    }
+
     def initialize(file_name)
         @file = FileOps.read(file_name)
         @total_score = 0
@@ -25,7 +43,14 @@ class Day2
 
     def rock_paper_scissors
         for line in @file
-            player1, player2 = line[0], line[2]
+            if line[2] == 'X'
+                player1, player2 = line[0], LOSE[line[0]]
+            elsif line[2] == 'Y'
+                player1, player2 = line[0], DRAW[line[0]]
+            elsif line[2] == 'Z'
+                player1, player2 = line[0], WIN[line[0]]
+            end
+
             outcome = determine_winner(player1, player2)
             puts "score: #{outcome + MOVES[player2]}"
             @total_score += outcome + MOVES[player2]
@@ -45,11 +70,6 @@ class Day2
         else
             return 6
         end
-    end
-
-    def calculate_score(move, outcome)
-        '''calculates the score of a round'''
-        MOVES[move] + OUTCOMES[outcome]
     end
 end
 
