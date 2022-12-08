@@ -13,19 +13,20 @@ class Day7
     
   def read_commands
     current_dir = @file_system["/"]
-    prev_dir = [] # stack
+    prev_dir = ["/"] # stack
     
     for line in @file do
       if line.start_with?("$ cd")
         target = line.split(' ')[-1]
+        puts "target #{target}"
         if target == '/'
-          prev_dir = []
+          prev_dir = ["/"]
           current_dir = @file_system["/"]
         elsif target == '..'
-          current_dir = prev_dir[-1]
           prev_dir.pop
+          current_dir = @file_system.dig(*prev_dir)
         else
-          prev_dir.push(current_dir)
+          prev_dir.push(target)
           current_dir = current_dir[target]
         end
       elsif line.start_with?("$ ls")
@@ -40,7 +41,6 @@ class Day7
       end
     end
   end
-  
   
   def size(hash)
     size = 0
@@ -60,6 +60,7 @@ class Day7
   def sum_directories
     sum = 0
     @dir_sizes.each do |key, value|
+      puts "#{key} : #{value}"
       sum += value if value <= 100000
     end
     return sum
@@ -67,6 +68,7 @@ class Day7
 end
 
 day7 = Day7.new('input/day7.txt')
-puts day7.size(day7.file_system["/"])
+puts day7.size(day7.file_system)
 puts day7.file_system
+puts day7.dir_sizes
 puts day7.sum_directories
