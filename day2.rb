@@ -2,7 +2,6 @@
 require_relative 'fileops'
 
 class Day2
-
     attr_accessor :total_score
 
     ROCK = ['A', 'X']
