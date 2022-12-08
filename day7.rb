@@ -3,7 +3,10 @@ require_relative 'fileops'
 
 class Day7
   attr_accessor :file, :file_system, :dir_sizes
-  
+
+  TOTAL_SPACE = 70000000
+  NEEDED_SPACE = 30000000
+
   def initialize(file_name)
     @file = FileOps.read(file_name)
     @file_system = {"/" => {}}
@@ -61,7 +64,7 @@ class Day7
         size += value
       end
     end
-    # @dir_sizes["/"] = size
+    @dir_sizes["/"] = size
     return size
   end
   
@@ -72,9 +75,18 @@ class Day7
     end
     return sum
   end
+
+  def smallest_deletion
+    min = Float::INFINITY
+    availiable_space = TOTAL_SPACE - @dir_sizes["/"]
+    @dir_sizes.each do |key, value|
+      min = value if availiable_space + value >= NEEDED_SPACE && value < min
+    end
+    return min
+  end
 end
 
 day7 = Day7.new('input/day7.txt')
 puts day7.size(day7.file_system["/"], "/")
-puts day7.dir_sizes
-puts day7.sum_directories
+puts day7.smallest_deletion
+
