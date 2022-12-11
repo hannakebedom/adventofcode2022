@@ -45,7 +45,7 @@ def move9001(stacks, directions)
 end
 
 populate(stacks, file, directions)
-move9001(stacks, directions)
+move9000(stacks, directions)
 
 result = ""
 for stack in stacks do
